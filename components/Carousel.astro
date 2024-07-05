@@ -1,0 +1,45 @@
+---
+const { items } = Astro.props;
+---
+
+<div class="carousel">
+  <div class="carousel-track" id="carouselTrack">
+    {
+      items.map((item) => (
+        <div class="carousel-item">
+          <img src={item} alt="" />
+        </div>
+      ))
+    }
+  </div>
+  <div class="carousel-controls">
+    <button class="carousel-control" id="prevButton">&lt;</button>
+    <button class="carousel-control" id="nextButton">&gt;</button>
+  </div>
+</div>
+
+<script>
+  let currentIndex = 0;
+  const track = document.getElementById("carouselTrack");
+  const itemsCount = track.children.length;
+
+  document.getElementById("prevButton").addEventListener("click", () => {
+    currentIndex = currentIndex > 0 ? currentIndex - 1 : itemsCount - 1;
+    updateCarousel();
+  });
+
+  document.getElementById("nextButton").addEventListener("click", () => {
+    currentIndex = currentIndex < itemsCount - 1 ? currentIndex + 1 : 0;
+    updateCarousel();
+  });
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+
+  // 自动轮播效果
+  setInterval(() => {
+    currentIndex = currentIndex < itemsCount - 1 ? currentIndex + 1 : 0;
+    updateCarousel();
+  }, 3000);
+</script>
